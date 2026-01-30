@@ -2,21 +2,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\UserController;
 
-Route::get('/user', function() {
-    return "Hello, User!";
-});
 
-Route::post('/data', function() {
-    return response()->json([
-        'message' => 'Data received successfully'
-    ]);
-});
 
-Route::delete('/item/{id}', function($id){
-    return response("Delete : ".$id, 200);
-});
 
-Route::put('/item/{id}', function($id){
-    return response("Item {$id} updated", 200);
-});
+
+Route::post('/user', [UserController::class, 'store']);
+Route::get('/users/get/{flag}', [UserController::class, 'index']);
+Route::get('/users/{id}', [UserController::class, 'show']);
