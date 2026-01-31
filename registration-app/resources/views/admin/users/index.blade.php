@@ -34,6 +34,8 @@
                         <form action="{{ route('admin.users.destroy', $user) }}" method="post" class="d-inline"
                             onsubmit="return confirm('Are you sure want to delete this user');">
                             @csrf
+                            {{-- CSRF is an attack where a malicious site tricks a logged-in user’s browser into sending unauthorized requests.
+Laravel prevents this by validating CSRF tokens stored in session using middleware. --}}
                             @method('DELETE')
                             <button class="btn btn-sm btn-danger">Delete</button>
                         </form>
