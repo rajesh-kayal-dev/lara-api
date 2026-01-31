@@ -8,7 +8,7 @@ return [
     |--------------------------------------------------------------------------
     | Default Session Driver
     |--------------------------------------------------------------------------
-    |
+    |A session is server-side storage that keeps user data across requests.
     | This option determines the default session driver that is utilized for
     | incoming requests. Laravel supports a variety of storage options to
     | persist session data. Database storage is a great default choice.
@@ -129,7 +129,7 @@ return [
 
     'cookie' => env(
         'SESSION_COOKIE',
-        Str::slug((string) env('APP_NAME', 'laravel')).'-session'
+        Str::slug((string) env('APP_NAME', 'laravel')) . '-session'
     ),
 
     /*
