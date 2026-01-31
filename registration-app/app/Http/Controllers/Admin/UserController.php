@@ -74,7 +74,7 @@ class UserController extends Controller
 
         // Update or create profile
         Profile::updateOrCreate(
-            ['user_id'=> $user->id],
+            ['user_id' => $user->id],
             [
                 'phone' => $validated['phone'] ?? null,
                 'bio' => $validated['bio'] ?? null,
@@ -85,13 +85,28 @@ class UserController extends Controller
             ->route('admin.users.index')
             ->with('success', 'User updated successfully.');
     }
-    }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        //
+        // Authorization check
+        abort_if(!auth()->user()->hasRole('admin'), 403);
+
+        // Prevent admin from deleting themselves
+        if (auth()->id() == $user->id) {
+            return redirect()
+                ->back()
+                ->with('error', 'You cannot delete your own account.');
+        }
+
+        //Delete user (profile will cascade)
+        $user->delete();
+
+        return redirect()
+            ->route('admin.users.index')
+            ->with('success', 'User deleted successfully.');
     }
 }

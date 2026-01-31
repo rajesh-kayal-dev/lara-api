@@ -41,3 +41,10 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
+Route::middleware(['auth'])->group(function () {
+
+    Route::delete('/admin/users/{user}', 
+        [AdminUserController::class, 'destroy'])
+        ->name('admin.users.destroy');
+
+});

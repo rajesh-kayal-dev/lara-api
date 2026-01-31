@@ -12,6 +12,7 @@
                 <th>Phone</th>
                 <th>Role</th>
                 <th>Joined</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -27,11 +28,21 @@
                         @endforeach
                     </td>
                     <td>{{ $user->created_at->format('d M Y') }}</td>
+                    <td>
+                        <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-sm btn-warning">Edit</a>
+
+                        <form action="{{ route('admin.users.destroy', $user) }}" method="post" class="d-inline"
+                            onsubmit="return confirm('Are you sure want to delete this user');">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </td>
                 </tr>
             @empty
-            <tr>
-                <td colspan="6" class="text-center text-info">No users registered yet.</td>
-            </tr>
+                <tr>
+                    <td colspan="6" class="text-center text-info">No users registered yet.</td>
+                </tr>
             @endforelse
         </tbody>
     </table>
