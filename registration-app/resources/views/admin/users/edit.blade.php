@@ -4,8 +4,9 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
 
-            <h3 class="mb-4">Edit Profile</h3>
-            <form action="{{route('profile.update', $user)  }}" method="post">
+            <h3 class="mb-4">Edit User (Admin)</h3>
+
+            <form method="POST" action="{{ route('admin.users.update', $user) }}">
                 @csrf
                 @method('PUT')
 
@@ -18,11 +19,11 @@
                     @enderror
                 </div>
 
-
                 {{-- Phone --}}
                 <div class="mb-3">
                     <label>Phone</label>
-                    <input type="text" name="phone" class="form-control" value="{{ old('phone', $user->profile->phone ?? '') }}">
+                    <input type="text" name="phone" class="form-control"
+                        value="{{ old('phone', $user->profile->phone ?? '') }}">
                 </div>
 
                 {{-- Bio --}}
@@ -31,8 +32,9 @@
                     <textarea name="bio" class="form-control">{{ old('bio', $user->profile->bio ?? '') }}</textarea>
                 </div>
 
-                <button class="btn btn-primary w-100">Update Profile</button>
+                <button class="btn btn-warning w-100">Update User</button>
             </form>
+
         </div>
     </div>
 @endsection

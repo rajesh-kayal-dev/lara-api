@@ -24,7 +24,7 @@ class RegisterController extends Controller
      */
     public function create()
     {
-        //
+        return view('auth.register');
     }
 
     /**
@@ -58,7 +58,7 @@ class RegisterController extends Controller
         $user->roles()->attach($role);
 
         return redirect()
-            ->route('register.create')
+            ->route('register')
             ->with('success', 'Register completed successfull!');
     }
 

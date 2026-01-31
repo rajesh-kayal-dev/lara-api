@@ -4,6 +4,20 @@ use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\ProfileController;
+
+Route::get('/', function () {
+    return view('landing');
+})->name('home');
+
+Route::get('/guide', function () {
+    return view('guide');
+})->name('guide');
+
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
 
 
 // Registration
@@ -20,6 +34,15 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 // Profile
 Route::middleware(['auth'])->group(function () {
-    Route::get('/profile/edit', [AdminUserController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile', [AdminUserController::class, 'update'])->name('profile.update');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])
+        ->name('profile.edit');
+
+    Route::put('/profile', [ProfileController::class, 'update'])
+        ->name('profile.update');
 });
+
+
+// Login
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login'])->name('login.store');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
