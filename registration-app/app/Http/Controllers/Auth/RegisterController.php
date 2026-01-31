@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Profile;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
 {
@@ -28,7 +32,34 @@ class RegisterController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'phone' => 'required|string|max:15',
+            'bio' => 'nullable|string|max:1000',
+        ]);
+
+        $user = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+        ]);
+
+        Profile::create([
+            'user_id' => $user->id,
+            'phone' => $validated['phone'] ?? null,
+            'bio'   => $validated['bio'] ?? null,
+        ]);
+
+
+        // Assign Role default user
+        $role = Role::where('name', 'user')->first();
+        $user->roles()->attach($role);
+
+        return redirect()
+            ->route('register.create')
+            ->with('success', 'Register completed successfull!');
     }
 
     /**
