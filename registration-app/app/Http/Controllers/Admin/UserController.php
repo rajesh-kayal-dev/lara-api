@@ -46,17 +46,45 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(User $user)
     {
-        //
+        abort_if(!auth()->user()->hasRole('admin'), 403);
+
+        $user->load('profile');
+
+        return view('admin.users.edit', compact('user'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, User $user)
     {
-        //
+        abort_if(!auth()->user()->hasRole('admin'), 403);
+
+        $validated = $request->validate([
+            'name'  => 'required|string|max:255',
+            'phone' => 'nullable|string|max:20',
+            'bio'   => 'nullable|string',
+        ]);
+
+        $user->update([
+            'name' => $validated['name']
+        ]);
+
+        // Update or create profile
+        Profile::updateOrCreate(
+            ['user_id'=> $user->id],
+            [
+                'phone' => $validated['phone'] ?? null,
+                'bio' => $validated['bio'] ?? null,
+            ]
+        );
+
+        return redirect()
+            ->route('admin.users.index')
+            ->with('success', 'User updated successfully.');
+    }
     }
 
     /**
