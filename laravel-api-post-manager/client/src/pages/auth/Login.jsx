@@ -6,7 +6,6 @@ import LoginCard from '../../components/auth/LoginCard';
 const Login = () => {
     return (
         <AuthLayout >
-
             <LoginCard />
         </AuthLayout>
 

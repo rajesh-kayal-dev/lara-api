@@ -2,6 +2,30 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/* ======================
+   CSS VARIABLES (LIGHT)
+====================== */
+:root {
+  --background: 255 255 255;
+  --foreground: 17 24 39;
+}
+
+/* ======================
+   DARK MODE VARIABLES
+====================== */
+.dark {
+  --background: 17 24 39;
+  --foreground: 243 244 246;
+}
+
+/* ======================
+   BASE STYLES
+====================== */
+body {
+  background-color: rgb(var(--background));
+  color: rgb(var(--foreground));
+}
+
 @custom-variant dark (&:is(.dark *));
 
 :root {
