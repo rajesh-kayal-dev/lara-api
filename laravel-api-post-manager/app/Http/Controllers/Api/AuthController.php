@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+// use Symfony\Component\HttpFoundation\Request;
 
 class AuthController extends Controller
 {
@@ -47,5 +49,19 @@ class AuthController extends Controller
             'token'   => $token,
             'user'    => $user,
         ], 200);
+    }
+
+    public function logout(Request $request)
+    {
+        $user = $request->user();
+
+        if ($user && $user->currentAccessToken()) {
+            $user->currentAccessToken()->delete();
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Logged out successfully'
+        ]);
     }
 }
